@@ -1,0 +1,18 @@
+groups:
+- name: example
+  rules:
+  - alert: HighErrorRate
+    expr: job:request_latency_seconds:mean5m{job="myjob"} > 0.5
+    for: 10m
+    labels:
+      severity: page
+    annotations:
+      summary: High request latency
+  - alert: InstanceDown
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: "critical"
+    annotations:
+      summary: "Endpoint {{ $labels.instance }} down"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minutes."
