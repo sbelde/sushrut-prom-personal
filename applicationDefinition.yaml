@@ -1,6 +1,0 @@
-Microservice: # Namespace used by extractor
-    Application : platform.infrastructure.prometheus_poc
-    Domain      : platform
-    Market      : infrastructure
-    Team        : epa.enterprise-platform-engineering
-                 

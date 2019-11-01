@@ -6,7 +6,7 @@ Description: >
 Parameters:
   Ami:
     Type: String
-    Default: ami-01435de7d73bd7a60
+    Default: ami-0305e36a
     Description: For optimal performance, use the latest Amazon Linux AMI (HVM) available
   AsgMaxSize:
     Type: Number
@@ -23,10 +23,10 @@ Parameters:
     Default: dev
   Subnets:
     Type: CommaDelimitedList
-    Default: subnet-0238542ca65d851b0, subnet-0e3aa1d3789b39af2
+    Default: subnet-42707a08
   VpcId:
     Type: String
-    Default: vpc-055eb8301cee2b4af
+    Default: vpc-ca1582b0
   InstanceType:
     Type: String
     AllowedValues:
@@ -79,6 +79,7 @@ Parameters:
     - i2.4xlarge
     - i2.8xlarge
     - t2.small
+    - t2.micro
 
 Resources: 
 
@@ -112,7 +113,7 @@ Resources:
           VolumeSize: 100
       InstanceType:
         Ref: InstanceType
-      IamInstanceProfile: arn:aws:iam::783348444393:instance-profile/RolePrometheusRead
+      IamInstanceProfile: arn:aws:iam::138185827818:role/sushrut-prom-test-HostRole-1BLJH7P5I5YXN
       SecurityGroups:
       - Ref: Sg
       UserData:
