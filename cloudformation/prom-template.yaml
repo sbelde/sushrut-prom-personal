@@ -11,7 +11,7 @@ Metadata:
         Parameters:
           - AsgMaxSize
           - AsgMinSize
-          - SubnetList
+          - Subnet
           - VpcId
           - InstanceType
           - Ami
@@ -45,7 +45,7 @@ Metadata:
         default: The maximum number of instances to launch
       AsgMinSize:
         default: The minimum number of instances to keep in service
-      SubnetList:
+      Subnets:
         default: The subnets in which the instances can run
       VpcId:
         default: The VPC to which the subnets belong
@@ -99,19 +99,27 @@ Parameters:
   AsgMinSize:
     Type: Number
     Default: 1
-  SubnetList:
-    Type: List<AWS::EC2::Subnet::Id>
+  Subnets:
+    Type: CommaDelimitedList
+    Default: subnet-0238542ca65d851b0, subnet-0e3aa1d3789b39af2
+  VpcZoneIdentifier:
+    Type: String
+    Default: subnet-0238542ca65d851b0
+    AllowedValues: 
+    - subnet-0238542ca65d851b0
+    - subnet-0e3aa1d3789b39af2     
   VpcId:
-    Type: AWS::EC2::VPC::Id
+    Type: String
+    Default: vpc-0a75a86dc7ad69a01
   PrometheusVersion:
     Type: String
     Default: '2.5.0'
   PrometheusConfigurationPathS3:
     Type: String
-    Default: s3://prom-test-sushrut/test.yaml
+    Default: s3://eis-cm1-prometheus-bucket/prometheus.yaml
   PrometheusAlertsPathS3:
     Type: String
-    Default: s3://prom-test-sushrut/alert-rules.yaml
+    Default: s3://eis-cm1-prometheus-bucket/alert-rules.yaml
   Environment:
     Type: String
     AllowedValues:
@@ -120,7 +128,7 @@ Parameters:
     - prod
     Default: dev
   KeyName:
-    Type: AWS::EC2::KeyPair::KeyName
+    Type: String
   Exposure:
     Type: String
     AllowedValues:
@@ -128,13 +136,13 @@ Parameters:
     - internal
     Default: internet-facing
   HostedZoneId:
-    Type: AWS::Route53::HostedZone::Id
+    Type: String
   DnsName:
     Type: String
-    Default: prometheus.test.sushrut.cloud
+    Default: prometheus.vpca.us-east-1.eis-vpcadevqa.cloud
   ConsulEndpoint:
     Type: String
-    Default: consul.test.sushrut.cloud
+    Default: consul.vpca.us-east-1.eis-vpcadevqa.cloud
   UseConsulTemplateToGenerateFile:
     Type: String
     Default: 'false'
@@ -227,25 +235,6 @@ Conditions:
       - true
 
 Resources: 
-  HostRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - ec2.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
-      - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
-
-  HostProfile:
-    Type: AWS::IAM::InstanceProfile
-    Properties:
-      Roles:
-      - Ref: HostRole
 
   Sg:
     Type: AWS::EC2::SecurityGroup
@@ -268,7 +257,7 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       VPCZoneIdentifier:
-        Ref: SubnetList
+        Ref: Subnets
       HealthCheckGracePeriod: '600'
       HealthCheckType: EC2
       LoadBalancerNames:
@@ -287,7 +276,7 @@ Resources:
           Fn::Sub: PrometheusASG-${AWS::StackName}
         PropagateAtLaunch: true
       - Key: Team
-        Value: NETBEARS
+        Value: epa.enterprise-platform-engineering
         PropagateAtLaunch: true
       - Key: Application
         Value: Prometheus
@@ -330,8 +319,7 @@ Resources:
           VolumeSize: 100
       InstanceType:
         Ref: InstanceType
-      IamInstanceProfile:
-        Ref: HostProfile
+      IamInstanceProfile: arn:aws:iam::783348444393:instance-profile/RolePrometheusRead
       KeyName:
         Ref: KeyName
       SecurityGroups:
@@ -554,7 +542,7 @@ Resources:
       SecurityGroups:
       - Ref: Sg
       Subnets:
-        Ref: SubnetList
+        Ref: Subnets
       Tags:
       - Key: Team
         Value: NETBEARS

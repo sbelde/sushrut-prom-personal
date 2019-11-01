@@ -1,0 +1,13 @@
+[{
+   "ParameterKey": "Ami",
+   "ParameterValue": "ami-01435de7d73bd7a60"
+}, {
+   "ParameterKey": "InstanceType",
+   "ParameterValue": "t2.small"
+}, {
+   "ParameterKey": "VpcId",
+   "ParameterValue": "vpc-055eb8301cee2b4af"
+},  {
+   "ParameterKey": "Subnets",
+   "ParameterValue": "subnet-00c117ffdd04e5639"
+}]

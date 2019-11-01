@@ -1,0 +1,56 @@
+# my global config
+global:
+  external_labels:
+    region: pdc
+    monitor: servers
+    replica: A
+  scrape_interval: 10s
+  evaluation_interval: 10s
+#  refresh_interval: 15s
+# scrape_timeout is set to the global default (10s)
+
+
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets: ["alertmanager01.epnet.com:9093"]
+
+rule_files:
+ - '/prometheus-data/alerts/*alerts.yml'
+
+scrape_configs:
+ - job_name: 'node'
+   static_configs:
+     - targets: ['localhost:9100']
+
+ - job_name: 'aws_prom_dev'
+   static_configs:
+     - targets: ['prometheus-dev.epnet.com:9090']
+
+
+ - job_name: 'aws_prom_lint'
+   static_configs:
+     - targets: ['prometheus-lint.epnet.com:9090']
+
+ - job_name: 'aws_prometheus'
+   static_configs:
+     - targets: ['edc-v-docker01.epnet.com:9090']
+
+ - job_name: 'aws'
+   file_sd_configs:
+     - files:
+       - '/prometheus-data/targets/*targets.json'
+#   metric_relabel_configs:
+#   - source_labels: [instance]
+#     action: replace
+#     replacement: $1
+#     target_label: host
+#   - regex: 'host'
+#     action: labeldrop
+#      - target_label: __address__
+#        replacement: '127.0.0.1:9126'
+#   relabel_configs
+
+ - job_name: 'aws_node_exporter'
+   static_configs:
+     - targets: ['edc-v-docker01.epnet.com:9100']

@@ -1,2 +1,2 @@
-# sushrut-prom-personal
-personal prom repo
+# epe-prom.aws.stack
+Prometheus AWS stack

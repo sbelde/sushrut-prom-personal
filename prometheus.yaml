@@ -3,12 +3,12 @@ global:
   scrape_timeout: 10s
   evaluation_interval: 15s
   external_labels:
-    Team: MYTEAM
+    Team: epa.enterprise-platform-engineering
 alerting:
   alertmanagers:
   - static_configs:
     - targets:
-      - 34.229.231.236:9093
+      - 10.23.13.177:9093
 rule_files:
 - alert-rules.yaml
 scrape_configs:

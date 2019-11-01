@@ -1,0 +1,44 @@
+[{
+   "ParameterKey": "Ami",
+   "ParameterValue": "ami-013be31976ca2c322"
+}, {
+   "ParameterKey": "InstanceType",
+   "ParameterValue": "t2.small"
+}, {
+   "ParameterKey": "AsgMaxSize",
+   "ParameterValue": "2"
+}, {
+   "ParameterKey": "AsgMinSize",
+   "ParameterValue": "1"
+}, {
+   "ParameterKey": "ConsulEndpoint",
+   "ParameterValue": "consul.vpca.us-east-1.eis-vpcadevqa.cloud"
+}, {
+   "ParameterKey": "DnsName",
+   "ParameterValue": "prometheus.vpca.us-east-1.eis-vpcadevqa.cloud"
+}, {
+   "ParameterKey": "Environment",
+   "ParameterValue": "dev"
+}, {
+   "ParameterKey": "KeyName",
+   "ParameterValue": "kp-epe"
+}, {
+   "ParameterKey": "Exposure",
+   "ParameterValue": "internal"
+}, {
+   "ParameterKey": "HostedZoneId",
+   "ParameterValue": "Z31LLUDF3BTZTR"
+}, {
+   "ParameterKey": "VpcId",
+   "ParameterValue": "vpc-0a75a86dc7ad69a01"
+},  {
+   "ParameterKey": "Subnets",
+   "ParameterValue": "subnet-0238542ca65d851b0,subnet-0e3aa1d3789b39af2"
+},  {
+   "ParameterKey": "UseSsl",
+   "ParameterValue": "true"
+},  {
+   "ParameterKey": "CertificateArn",
+   "ParameterValue": "arn:aws:acm:us-east-1:783348444393:certificate/eae5ba99-dc8b-4a6b-8935-08048be3f252"
+}]
+
