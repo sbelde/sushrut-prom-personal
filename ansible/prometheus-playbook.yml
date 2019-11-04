@@ -75,4 +75,4 @@
       cron:
         name: "Schedule alertmanager config updates"
         minute: "*/10"
-        job: "ansible-playbook /root/ansible/repo/alertmanager_config_sync.yml"
+        job: "ansible-playbook /root/ansible/ansible/alertmanager_config_sync.yml"
