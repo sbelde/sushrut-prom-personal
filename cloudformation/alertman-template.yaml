@@ -6,7 +6,7 @@ Description: >
 Parameters:
   Ami:
     Type: String
-    Default: ami-0305e36a
+    Default: ami-00dc79254d0461090
     Description: For optimal performance, use the latest Amazon Linux AMI (HVM) available
   AsgMaxSize:
     Type: Number
@@ -23,7 +23,7 @@ Parameters:
     Default: dev
   Subnets:
     Type: CommaDelimitedList
-    Default: subnet-42707a08
+    Default: subnet-7539785b
   VpcId:
     Type: String
     Default: vpc-ca1582b0
@@ -113,7 +113,7 @@ Resources:
           VolumeSize: 100
       InstanceType:
         Ref: InstanceType
-      IamInstanceProfile: arn:aws:iam::138185827818:role/sushrut-prom-test-HostRole-1BLJH7P5I5YXN
+      IamInstanceProfile: arn:aws:iam::138185827818:role/CodeDeployDemo-EC2-Instance-Profile
       SecurityGroups:
       - Ref: Sg
       UserData:
@@ -135,10 +135,13 @@ Resources:
             - htop
             - zip
             - unzip
-            - ansible
             runcmd:
-            - git clone https://foosball.example.org/path/to/repo.git /root/ansible
-            - ansible-playbook /root/ansible/repo/prometheus-playbook.yml
+            - rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+            - yum update
+            - yum install -y ansible
+            - mkdir -p /root/ansible
+            - git clone --single-branch --branch test-ansible-alertmanager https://4c6bac8df4699bf98b81f8e846781a430446638d@foosball.example.org/path/to/repo.git /root/ansible
+            - ansible-playbook /root/ansible/ansible/prometheus-playbook.yml
 
   ASG:
     Type: AWS::AutoScaling::AutoScalingGroup
