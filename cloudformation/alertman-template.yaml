@@ -144,7 +144,7 @@ Resources:
             - yum update
             - yum install -y ansible
             - mkdir -p /root/ansible
-            - git clone --single-branch --branch test-ansible-alertmanager https://4c6bac8df4699bf98b81f8e846781a430446638d@foosball.example.org/path/to/repo.git /root/ansible
+            - git clone --single-branch --branch test-ansible-alertmanager https://4c6bac8df4699bf98b81f8e846781a430446638d@github.com/sbelde/sushrut-prom-personal.git /root/ansible
             - ansible-playbook /root/ansible/ansible/prometheus-playbook.yml
 
   ASG:
