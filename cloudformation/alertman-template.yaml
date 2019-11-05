@@ -27,6 +27,8 @@ Parameters:
   VpcId:
     Type: String
     Default: vpc-ca1582b0
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
   InstanceType:
     Type: String
     AllowedValues:
@@ -106,6 +108,8 @@ Resources:
       ImageId:
         Ref: Ami
       EbsOptimized: false
+      KeyName:
+        Ref: KeyName
       BlockDeviceMappings:
       - DeviceName: /dev/xvda
         Ebs:
