@@ -3,7 +3,7 @@
   connection: local
   tasks:
     - git:
-        repo: 'https://4c6bac8df4699bf98b81f8e846781a430446638d@foosball.example.org/path/to/repo.git'
+        repo: 'https://4c6bac8df4699bf98b81f8e846781a430446638d@github.com/sbelde/sushrut-prom-personal.git'
         dest: /root/ansible
         reference: test-ansible-alertmanager
         clone: yes
