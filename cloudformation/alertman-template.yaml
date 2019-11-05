@@ -113,7 +113,7 @@ Resources:
           VolumeSize: 100
       InstanceType:
         Ref: InstanceType
-      IamInstanceProfile: arn:aws:iam::138185827818:role/CodeDeployDemo-EC2-Instance-Profile
+      IamInstanceProfile: arn:aws:iam::138185827818:instance-profile/CodeDeployDemo-EC2-Instance-Profile
       SecurityGroups:
       - Ref: Sg
       UserData:
