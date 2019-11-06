@@ -17,3 +17,7 @@
         owner: alertmanager
         group: alertmanager
         mode: '0644'
+    - name: Reload config with latest changes
+      uri:
+        url: http://localhost:9090/-/reload
+        method: POST
