@@ -108,10 +108,10 @@ Parameters:
     Default: '2.5.0'
   PrometheusConfigurationPathS3:
     Type: String
-    Default: s3://arn:aws:s3:::sushrut-issue35-prometheus/prometheus.yaml
+    Default: s3://arn:aws:s3:::prom-test-sushrut/
   PrometheusAlertsPathS3:
     Type: String
-    Default: s3://arn:aws:s3:::sushrut-issue35-prometheus/alert-rules.yaml
+    Default: s3://arn:aws:s3:::prom-test-sushrut/
   Environment:
     Type: String
     AllowedValues:
@@ -131,10 +131,10 @@ Parameters:
     Type: AWS::Route53::HostedZone::Id
   DnsName:
     Type: String
-    Default: prometheus.aws.pkranjan.in
+    Default: prometheus.sushrut.personal.com
   ConsulEndpoint:
     Type: String
-    Default: consul.aws.pkranjan.in
+    Default: consul.sushrut.personal.com
   UseConsulTemplateToGenerateFile:
     Type: String
     Default: 'false'
@@ -218,6 +218,7 @@ Parameters:
     - i2.2xlarge
     - i2.4xlarge
     - i2.8xlarge
+    - t2.micro
 
 Conditions:
   LoadBalancerSsl: 
@@ -356,8 +357,8 @@ Resources:
             - unzip
             - aneible
             runcmd:
-            - git clone https://foosball.example.org/path/to/repo.git /root/ansible
-            - ansible-playbook /root/ansible/repo/prometheus-playbook.yml
+            - git clone https://4c6bac8df4699bf98b81f8e846781a430446638d@github.com/sbelde/sushrut-prom-personal.git /root/ansible
+            - ansible-playbook /root/ansible/ansible/prometheus-playbook.yml
             
   CpuUtilizationTargetTracking:
     Type: AWS::AutoScaling::ScalingPolicy
