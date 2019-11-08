@@ -164,7 +164,7 @@ Parameters:
     AllowedValues:
     - true
     - false
-    Default: true
+    Default: false
   CertificateArn:
     Type: String
   InstanceType:
@@ -238,7 +238,7 @@ Resources:
                 - ec2.amazonaws.com
             Action: sts:AssumeRole
       ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+      - arn:aws:iam::aws:policy/AmazonEC2FullAccess
       - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
 
   HostProfile:
