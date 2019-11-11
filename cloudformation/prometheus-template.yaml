@@ -11,7 +11,7 @@ Metadata:
         Parameters:
           - AsgMaxSize
           - AsgMinSize
-          - Subnet
+          - Subnets
           - VpcId
           - InstanceType
           - Ami
