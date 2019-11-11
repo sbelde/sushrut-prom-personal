@@ -11,7 +11,7 @@ Metadata:
         Parameters:
           - AsgMaxSize
           - AsgMinSize
-          - SubnetList
+          - Subnet
           - VpcId
           - InstanceType
           - Ami
@@ -374,7 +374,7 @@ Resources:
       SecurityGroups:
       - Ref: Sg
       Subnets:
-        Ref: SubnetList
+        Ref: Subnets
       Tags:
       - Key: Team
         Value: NETBEARS
