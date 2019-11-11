@@ -15,7 +15,7 @@ Metadata:
           - VpcId
           - InstanceType
           - Ami
-          - KeyName
+          - Keyname
 
       - Label:
           default: Prometheus configuration
@@ -27,8 +27,6 @@ Metadata:
           - DnsName
           - UseSsl
           - CertificateArn
-          - PrometheusConfigurationPathS3
-          - PrometheusAlertsPathS3
           - ConsulEndpoint
           - UseConsulTemplateToGenerateFile
           - StorageTsdbRetention
@@ -45,7 +43,7 @@ Metadata:
         default: The maximum number of instances to launch
       AsgMinSize:
         default: The minimum number of instances to keep in service
-      SubnetList:
+      Subnets:
         default: The subnets in which the instances can run
       VpcId:
         default: The VPC to which the subnets belong
@@ -67,10 +65,6 @@ Metadata:
         default: Whether to use SSL when connecting via load balancer
       CertificateArn:
         default: The Certificate ARN to use when UseSsl is set to "true"
-      PrometheusConfigurationPathS3:
-        default: The path to your Prometheus configuration (prometheus.yaml)
-      PrometheusAlertsPathS3:
-        default: The path to your Prometheus alert rules (alert-rules.yaml)
       ConsulEndpoint:
         default: The consul endpoint to connect to for configuration details
       UseConsulTemplateToGenerateFile:
@@ -99,19 +93,14 @@ Parameters:
   AsgMinSize:
     Type: Number
     Default: 1
-  SubnetList:
-    Type: List<AWS::EC2::Subnet::Id>
+  Subnets:
+    Type: CommaDelimitedList
+    Default: AWS::EC2::Subnet::Id
   VpcId:
     Type: AWS::EC2::VPC::Id
   PrometheusVersion:
     Type: String
     Default: '2.5.0'
-  PrometheusConfigurationPathS3:
-    Type: String
-    Default: s3://arn:aws:s3:::prom-test-sushrut/
-  PrometheusAlertsPathS3:
-    Type: String
-    Default: s3://arn:aws:s3:::prom-test-sushrut/
   Environment:
     Type: String
     AllowedValues:
@@ -227,25 +216,6 @@ Conditions:
       - true
 
 Resources: 
-  HostRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - ec2.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/AmazonEC2FullAccess
-      - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
-
-  HostProfile:
-    Type: AWS::IAM::InstanceProfile
-    Properties:
-      Roles:
-      - Ref: HostRole
 
   Sg:
     Type: AWS::EC2::SecurityGroup
@@ -268,7 +238,7 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       VPCZoneIdentifier:
-        Ref: SubnetList
+        Ref: Subnets
       HealthCheckGracePeriod: '600'
       HealthCheckType: EC2
       LoadBalancerNames:
@@ -287,7 +257,7 @@ Resources:
           Fn::Sub: PrometheusASG-${AWS::StackName}
         PropagateAtLaunch: true
       - Key: Team
-        Value: NETBEARS
+        Value: epa.enterprise-platform-engineering
         PropagateAtLaunch: true
       - Key: Application
         Value: Prometheus
@@ -330,8 +300,7 @@ Resources:
           VolumeSize: 100
       InstanceType:
         Ref: InstanceType
-      IamInstanceProfile:
-        Ref: HostProfile
+      IamInstanceProfile: arn:aws:iam::138185827818:instance-profile/CodeDeployDemo-EC2-Instance-Profile
       KeyName:
         Ref: KeyName
       SecurityGroups:
@@ -355,8 +324,11 @@ Resources:
             - htop
             - zip
             - unzip
-            - ansible
             runcmd:
+            - rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+            - yum update
+            - yum install -y ansible
+            - mkdir -p /root/ansible
             - git clone --single-branch --branch test-ansible-prometheus https://4c6bac8df4699bf98b81f8e846781a430446638d@github.com/sbelde/sushrut-prom-personal.git /root/ansible
             - ansible-playbook /root/ansible/ansible/prometheus-playbook.yml
             
