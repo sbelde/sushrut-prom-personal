@@ -94,8 +94,7 @@ Parameters:
     Type: Number
     Default: 1
   Subnets:
-    Type: CommaDelimitedList
-    Default: AWS::EC2::Subnet::Id
+    Type: List<AWS::EC2::Subnet::Id>
   VpcId:
     Type: AWS::EC2::VPC::Id
   PrometheusVersion:
