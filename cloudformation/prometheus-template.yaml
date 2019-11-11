@@ -322,7 +322,7 @@ Resources:
     Properties:
       ImageId:
         Ref: Ami
-      EbsOptimized: true
+      EbsOptimized: false
       BlockDeviceMappings:
       - DeviceName: /dev/xvda
         Ebs:
@@ -355,7 +355,7 @@ Resources:
             - htop
             - zip
             - unzip
-            - aneible
+            - ansible
             runcmd:
             - git clone https://4c6bac8df4699bf98b81f8e846781a430446638d@github.com/sbelde/sushrut-prom-personal.git /root/ansible
             - ansible-playbook /root/ansible/ansible/prometheus-playbook.yml
