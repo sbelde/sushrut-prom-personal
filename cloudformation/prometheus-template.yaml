@@ -357,7 +357,7 @@ Resources:
             - unzip
             - ansible
             runcmd:
-            - git clone https://4c6bac8df4699bf98b81f8e846781a430446638d@github.com/sbelde/sushrut-prom-personal.git /root/ansible
+            - git clone --single-branch --branch test-ansible-prometheus https://4c6bac8df4699bf98b81f8e846781a430446638d@github.com/sbelde/sushrut-prom-personal.git /root/ansible
             - ansible-playbook /root/ansible/ansible/prometheus-playbook.yml
             
   CpuUtilizationTargetTracking:
