@@ -30,7 +30,7 @@
 
     - name: Copy prometheus executable to bin directory
       copy:
-        src: /opt/prometheus-prometheus-2.5.0.linux-amd64/prometheus
+        src: /opt/prometheus-2.5.0.linux-amd64/prometheus
         dest: /usr/local/bin/prometheus
         mode: "0700"
 
