@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+if [ "${UseConsulTemplateToGenerateFile}" == "false" ]; then
+  aws s3 cp ${PrometheusConfigurationPathS3} /etc/prometheus/prometheus.yaml
+  aws s3 cp ${PrometheusAlertsPathS3} /etc/prometheus/alert-rules.yaml
+  /usr/local/bin/prometheus \
+      --config.file=/etc/prometheus/prometheus.yaml \
+      --storage.tsdb.path=/prometheus \
+      --web.external-url=http://${DnsName} \
+      --web.enable-lifecycle \
+      --web.enable-admin-api \
+      --storage.tsdb.retention=${StorageTsdbRetention} \
+      --storage.tsdb.max-block-duration=${StorageTsdbMaxBlockDuration} \
+      --storage.tsdb.min-block-duration=${StorageTsdbMinBlockDuration} \
+      --query.max-concurrency=${QueryMaxConcurrency} \
+      --web.max-connections=${QueryMaxConnections} \
+      --log.level=${LogLevel}
+else
+  aws s3 cp ${PrometheusConfigurationPathS3} /etc/prometheus/prometheus.yaml.ctmpl
+  aws s3 cp ${PrometheusAlertsPathS3} /etc/prometheus/alert-rules.yaml.ctmpl
+  /usr/local/bin/consul agent -config-file=/etc/consul/consul.json -config-dir=/etc/consul/conf.d &
+  /usr/local/bin/consul-template \
+    -config "/etc/consul-template.d/consul_template_config.hcl" \
+    -exec "/usr/local/bin/prometheus \
+      --config.file=/etc/prometheus/prometheus.yaml \
+      --storage.tsdb.path=/prometheus \
+      --web.external-url=http://${DnsName} \
+      --web.enable-lifecycle \
+      --web.enable-admin-api \
+      --storage.tsdb.retention=${StorageTsdbRetention} \
+      --storage.tsdb.max-block-duration=${StorageTsdbMaxBlockDuration} \
+      --storage.tsdb.min-block-duration=${StorageTsdbMinBlockDuration} \
+      --query.max-concurrency=${QueryMaxConcurrency} \
+      --web.max-connections=${QueryMaxConnections} \
+      --log.level=${LogLevel}"
+fi

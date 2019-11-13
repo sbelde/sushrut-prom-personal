@@ -1,0 +1,17 @@
+{
+  "client_addr": "0.0.0.0",
+  "data_dir": "/opt/consul-data",
+  "datacenter": "${Environment}01-consul",
+  "ports": {
+    "dns": 8600,
+    "http": 8500,
+    "serf_lan": 8301,
+    "serf_wan": 8302,
+    "server": 8300
+  },
+  "retry_join": [
+    "${ConsulEndpoint}"
+  ],
+  "verify_incoming": false,
+  "verify_outgoing": false
+}

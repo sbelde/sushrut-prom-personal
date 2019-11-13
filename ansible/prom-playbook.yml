@@ -1,0 +1,98 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: Create a directory for Prometheus
+      file:
+        path: /prometheus
+        state: directory
+
+    - name: Create a directory for prometheus config
+      file:
+        path: /etc/prometheus
+        state: directory
+
+    - name: Create a directory for consul template
+      file:
+        path: /etc/consul-template.d
+        state: directory
+
+    - name: Get Prometheus installation zip file
+      get_url:
+        url: https://github.com/prometheus/prometheus/releases/download/v2.5.0/prometheus-2.5.0.linux-amd64.tar.gz
+        dest: /tmp/prometheus-2.5.0.linux-amd64.tar.gz
+        mode: '0644'
+
+    - name: Extract prometheus installation file
+      unarchive:
+        src: /tmp/prometheus-2.5.0.linux-amd64.tar.gz
+        dest: /opt
+
+    - name: Copy prometheus executable to bin directory
+      copy:
+        src: /opt/prometheus-prometheus-2.5.0.linux-amd64/prometheus
+        dest: /usr/local/bin/prometheus
+        mode: "0700"
+
+    - name: Copy promtool executable to bin directory
+      copy:
+        src: /opt/prometheus-2.5.0.linux-amd64/promtool
+        dest: /usr/local/bin/promtool
+        mode: "0700"
+
+    - name: Get consul-template installation zip file
+      get_url:
+        url: https://releases.hashicorp.com/consul-template/0.19.0/consul-template_0.19.0_linux_amd64.zip
+        dest: /tmp/consul-template_0.19.0_linux_amd64.zip
+        mode: '0644'
+
+    - name: Extract consul-template installation file
+      unarchive:
+        src: /tmp/consul-template_0.19.0_linux_amd64.zip
+        dest: /opt
+
+    - name: Copy consul-template executable to bin directory
+      copy:
+        src: /opt/consul-template_0.19.0_linux_amd64/consul-template
+        dest: /usr/local/bin/consul-template
+        mode: "0700"
+
+    - name: Get consul installation zip file
+      get_url:
+        url: https://releases.hashicorp.com/consul/1.4.0/consul_1.4.0_linux_amd64.zip
+        dest: /tmp/consul_1.4.0_linux_amd64.zip
+        mode: '0644'
+
+    - name: Extract consul installation file
+      unarchive:
+        src: /tmp/consul_1.4.0_linux_amd64.zip
+        dest: /opt
+
+    - name: Remove consul installation file (delete file)
+      file:
+        path: /opt/consul_1.4.0_linux_amd64.zip
+        state: absent
+
+    - name: Copy consul executable to bin directory
+      copy:
+        src: /opt/consul_1.4.0_linux_amd64/consul
+        dest: /usr/local/bin/consul
+        mode: "0700"
+        
+    - name: Create a directory for Consul
+      file:
+        path: /var/lib/consul
+        state: directory
+
+    - name: Create a directory for conf.d
+      file:
+        path: /etc/consul/conf.d
+        state: directory
+
+    - name: Create a directory for consul-data
+      file:
+        path: /opt/consul-data
+        state: directory
+
+    - name: Run command to execute shell script
+      command: /etc/prometheus/start.sh

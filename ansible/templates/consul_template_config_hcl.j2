@@ -1,0 +1,55 @@
+{
+  "consul": {
+    "auth": {
+      "enabled": false
+    },
+    "address": "${ConsulEndpoint}:8500",
+    "retry": {
+      "enabled": true,
+      "attempts": -1,
+      "backoff": "250ms",
+      "max_backoff": "1m"
+    },
+    "ssl": {
+      "enabled": false
+    }
+  },
+  "reload_signal": "SIGHUP",
+  "kill_signal": "SIGINT",
+  "max_stale": "10m",
+  "log_level": "warn",
+  "wait": {
+    "min": "5s",
+    "max": "10s"
+  },
+  "deduplicate": {
+    "enabled": true,
+    "prefix": "consul-template/dedup/prometheus/${PrometheusVersion}"
+  },
+  "template": [
+    {
+      "source": "/etc/prometheus/alert-rules.yaml.ctmpl",
+      "destination": "/etc/prometheus/alert-rules.yaml",
+      "perms": "0644",
+      "backup": true,
+      "left_delimiter": "{{",
+      "right_delimiter": "}}",
+      "wait": {
+        "min": "2s",
+        "max": "10s"
+      }
+    },
+    {
+      "source": "/etc/prometheus/prometheus.yaml.ctmpl",
+      "destination": "/etc/prometheus/prometheus.yaml",
+      "perms": "0644",
+      "backup": true,
+      "left_delimiter": "{{",
+      "right_delimiter": "}}",
+      "wait": {
+        "min": "2s",
+        "max": "10s"
+      }
+    }
+  ]
+}
